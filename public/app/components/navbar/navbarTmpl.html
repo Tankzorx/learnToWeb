@@ -1,0 +1,16 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navbarCtrl">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#home" ng-click="setActive(0)">Fine ass logo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+
+        <li ng-repeat="item in navItems" ng-class="$index == selectedTab ? 'active' : ''" >
+          <a href="#{{item}}" ng-click="setActive($index)">{{item}}</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
