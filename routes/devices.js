@@ -3,29 +3,30 @@ var router = express.Router();
 
 var devices = {devices:
                 [
-                  {id: 1 , ip : "111.111.111", name:"Maskine1"},
-                  {id: 2 , ip : "222.222.222", name:"Maskine2"}
+                  {mac: "2a:da:21:fd:4f:1c" , ip : "111.111.111", name:"Maskine1"},
+                  {mac: "2a:da:21:fd:4f:1c" , ip : "222.222.222", name:"Maskine2"}
                 ]
               };
 
 
 router.get("/",function(req, res, next) {
-  res.json(devices);
-  res.end();
+    res.json(devices);    
 });
 
-router.post("/insert", function(req,res,next) {
+router.post("/add", function(req,res,next) {
+	setTimeout(function() {
 
 	var newDevice = req.body;
-	res.json({devices:
-  						[
-  							{id: 1 , ip : "111.111.111", name:"Maskine1"},
-  							{id: 2 , ip : "222.222.222", name:"Maskine2"},
-  							newDevice
-  						]
-  					});
+  devices.devices.push(newDevice);
+	console.log("Added device")
+	res.status(200);
+	res.send("Success")
+
+	}, 3000);
 
 });
+
+router.post("/remove")
 
 
 module.exports = router;

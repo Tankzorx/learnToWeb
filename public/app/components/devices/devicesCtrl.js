@@ -1,11 +1,40 @@
 angular.module("learnToWeb")
-.controller("devicesCtrl",["$scope","devices","deviceStorage",function($scope,devices,deviceStorage) {
+.controller("devicesCtrl",["$scope","deviceStorage",function($scope,deviceStorage) {
 
 
-	$scope.devices = devices;
+	$scope.configMode = false;
+	$scope.devices = deviceStorage.devices;
+	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
 
-	// deviceStorage.get().then(function(resp) {
-	// 	$scope.devices = resp.devices;
-	// })
+
+	$scope.newDeviceName = "";
+
+	$scope.addDevice = function() {
+		console.log($scope.newDeviceName);
+
+		var newDevice = {
+			name: $scope.newDeviceName,
+			ip: $scope.newDeviceIP,
+			mac: $scope.newDeviceMAC
+		}
+		$scope.newDeviceName = "";
+		$scope.newDeviceIP = "";
+		$scope.newDeviceMAC = "";
+
+
+		deviceStorage.add(newDevice)
+		// .then(function(resp) {
+		// 	console.log($scope.devices.length);
+		// })
+	}
+
+	$scope.removeDevice = function(deviceId) {
+
+	}
+
+	$scope.switchMode = function() {
+		$scope.configMode = !$scope.configMode;
+	}
+
 
 }])

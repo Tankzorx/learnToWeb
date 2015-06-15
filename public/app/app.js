@@ -13,16 +13,8 @@ app.config(function($routeProvider) {
 			templateUrl : "app/components/devices/devices.html",
 			controller : "devicesCtrl",
 			resolve : {
-				// devices : ["deviceStorage",function(deviceStorage) {
-				// 	return deviceStorage.get()
-				// 	.then(function(data) {
-				// 		console.log(deviceStorage);
-				// 		return deviceStorage.devices;
-				// 	})
-				// }]
 				devices : ["deviceStorage",function(deviceStorage) {
-					deviceStorage.get();
-					return deviceStorage.devices;
+					return deviceStorage.get();
 				}]
 			}
 		})
@@ -36,4 +28,10 @@ app.config(function($routeProvider) {
 	$routeProvider.otherwise({
 		redirectTo: "/home"
 	})
+})
+
+app.filter("reverse",function() {
+	return function(list) {
+		return list.slice().reverse();
+	}
 })

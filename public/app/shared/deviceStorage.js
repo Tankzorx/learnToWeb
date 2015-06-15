@@ -11,15 +11,17 @@ angular.module("learnToWeb")
 				});
 		},
 		add: function(device) {
-			return $http.post('devices/add')
+			return $http.post('devices/add',device)
 			.then(function(resp) {
-				// success
-
+				deviceStorage.devices.push(device);
+				console.log("Success")
+				return resp;
 			}, function() {
 				// err
 			});
 		},
 		delete: function(device) {
+			return $http.post('devices/remove')
 
 		},
 		update: function(olddevice,newdevice) {
