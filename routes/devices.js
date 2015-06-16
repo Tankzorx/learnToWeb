@@ -18,15 +18,31 @@ router.post("/add", function(req,res,next) {
 
 	var newDevice = req.body;
   devices.devices.push(newDevice);
-	console.log("Added device")
 	res.status(200);
-	res.send("Success")
+	res.end("Success");
 
 	}, 3000);
 
 });
 
-router.post("/remove")
+router.post("/delete",function(req,res,next) {
+  console.log("==========================================")
+  var deviceId = req.body.id;
+  console.log(deviceId);
+  console.log(devices.devices.length);
+  for (var i = 0; i < devices.devices.length; i++) {
+    console.log(devices.devices[i].ip)
+    if (devices.devices[i].ip === deviceId) {
+      console.log(devices.devices.length);
+      devices.devices.splice(i,1);
+      console.log(devices.devices.length);
+    };
+  };
+
+  res.send("Success");
+  console.log("==========================================")
+  
+})
 
 
 module.exports = router;

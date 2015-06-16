@@ -24,7 +24,20 @@
 			<td>{{device.name}}</td>
 			<td>{{device.ip}}</td>
 			<td>{{device.mac}}</td>
-			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device.id)">Remove Device</button></td>
+			<td ng-show="!configMode"></td>
+			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device.ip)">Remove Device</button></td>
 		</tr>
 	</tbody>	
 </table>
+
+
+<div class="container" ng-show="false">
+	<div class="device">
+		<div class="row">
+			<div class="col-md-3">LOREM IPSUM</div>
+			<div class="col-md-3">LOREM IPSUM</div>
+			<div class="col-md-3">LOREM IPSUM</div>
+			<div class="col-md-3">LOREM IPSUM</div>
+		</div>
+	</div>
+</div>

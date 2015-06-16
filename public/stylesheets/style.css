@@ -14,3 +14,7 @@ body {
 #configButton {
 	vertical-align: center;
 }
+
+.device {
+	outline: 1px solid orange;
+}
