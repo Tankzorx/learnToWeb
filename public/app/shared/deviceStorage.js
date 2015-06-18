@@ -1,6 +1,5 @@
 angular.module("learnToWeb")
 .factory("deviceStorage",['$http',function($http) {
-	
 	var deviceStorage = {
 		devices : [],
 		get: function() {

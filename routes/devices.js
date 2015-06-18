@@ -1,5 +1,7 @@
 var express = require('express');
+var mongoose = require("mongoose");
 var router = express.Router();
+var Device = require("../models/deviceModel");
 
 var devices = {devices:
                 [
@@ -10,38 +12,51 @@ var devices = {devices:
 
 
 router.get("/",function(req, res, next) {
-    res.json(devices);    
+    Device.find(function(err,allDevices) {
+      if (err) {console.log(err)};
+      console.log(allDevices)
+      res.json(allDevices);
+    })
 });
 
 router.post("/add", function(req,res,next) {
+
 	setTimeout(function() {
 
-	var newDevice = req.body;
-  devices.devices.push(newDevice);
-	res.status(200);
-	res.end("Success");
+    var user = mongoose.Types.ObjectId();
 
-	}, 3000);
+    var deviceObject = {
+      name:"NAME",
+      type:"TYPE",
+      macAdress:"MAC",
+      ipAdress:"IP",
+      owner: user,
+      members:[user],
+      addedDate: Date.now(),
+      lastUpdated: Date.now()
+    }
+    var newDevice = new Device(deviceObject);
+    
+    newDevice.save(function(err) {
+      if (err) {console.log(err)};
+      console.log("INSERTED DEVICE");
+      res.end("Success");
+      res.status(200);
+    })
+
+	}, 300);
 
 });
 
 router.post("/delete",function(req,res,next) {
-  console.log("==========================================")
   var deviceId = req.body.id;
-  console.log(deviceId);
-  console.log(devices.devices.length);
   for (var i = 0; i < devices.devices.length; i++) {
-    console.log(devices.devices[i].ip)
     if (devices.devices[i].ip === deviceId) {
-      console.log(devices.devices.length);
       devices.devices.splice(i,1);
-      console.log(devices.devices.length);
     };
   };
 
   res.send("Success");
-  console.log("==========================================")
-  
 })
 
 
