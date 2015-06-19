@@ -12,11 +12,12 @@ var devices = {devices:
 
 
 router.get("/",function(req, res, next) {
+
     Device.find(function(err,allDevices) {
       if (err) {console.log(err)};
-      console.log(allDevices)
       res.json(allDevices);
     })
+
 });
 
 router.post("/add", function(req,res,next) {
@@ -24,12 +25,12 @@ router.post("/add", function(req,res,next) {
 	setTimeout(function() {
 
     var user = mongoose.Types.ObjectId();
-
+    var clientDevice = req.body
     var deviceObject = {
-      name:"NAME",
-      type:"TYPE",
-      macAdress:"MAC",
-      ipAdress:"IP",
+      name:clientDevice.name,
+      type:clientDevice.type,
+      macAdress:clientDevice.macAdress,
+      ipAdress:clientDevice.ipAdress,
       owner: user,
       members:[user],
       addedDate: Date.now(),
@@ -39,9 +40,8 @@ router.post("/add", function(req,res,next) {
     
     newDevice.save(function(err) {
       if (err) {console.log(err)};
-      console.log("INSERTED DEVICE");
-      res.end("Success");
-      res.status(200);
+      console.log("Inserted device: " + newDevice._id);
+      res.json(newDevice);
     })
 
 	}, 300);
@@ -50,13 +50,16 @@ router.post("/add", function(req,res,next) {
 
 router.post("/delete",function(req,res,next) {
   var deviceId = req.body.id;
-  for (var i = 0; i < devices.devices.length; i++) {
-    if (devices.devices[i].ip === deviceId) {
-      devices.devices.splice(i,1);
-    };
-  };
+  Device.remove({_id : deviceId},function(err) {
+    if (err) {
+      res.status(500);
+      res.end();
+    } else {
+      console.log("Deleted device: " + deviceId)
+      res.send("Deleted device");
+    }
 
-  res.send("Success");
+  })
 })
 
 

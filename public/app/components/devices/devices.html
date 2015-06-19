@@ -10,6 +10,8 @@
 			<th>Device Name</th>
 			<th>IP-adress</th>
 			<th>MAC-adress</th>
+			<th>Type</th>
+			<th>Added Date</th>
 		</tr>
 	</thead>
 	<tbody id="new-device-row">
@@ -17,15 +19,18 @@
 			<td><input class="form-control" placeholder="New Device Name"ng-model="newDeviceName"></input></td>
 			<td><input class="form-control" placeholder="New Device IP" ng-model="newDeviceIP"></input></td>
 			<td><input class="form-control" placeholder="New Device MAC"ng-model="newDeviceMAC"></input></td>
+			<td><input class="form-control" placeholder="New Device Type"ng-model="newDeviceType"></input></td>
 			<td><button class="btn btn-primary" ng-click="addDevice()">Add Device</button></td>
 		</tr>
 
 		<tr ng-repeat="device in devices | reverse">
 			<td>{{device.name}}</td>
-			<td>{{device.ip}}</td>
-			<td>{{device.mac}}</td>
+			<td>{{device.ipAdress}}</td>
+			<td>{{device.macAdress}}</td>
+			<td>{{device.type}}</td>
+			<td>{{device.addedDate | date : medium}}</td>
 			<td ng-show="!configMode"></td>
-			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device.ip)">Remove Device</button></td>
+			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device._id)">Remove Device</button></td>
 		</tr>
 	</tbody>	
 </table>

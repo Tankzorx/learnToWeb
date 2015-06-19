@@ -12,13 +12,14 @@ angular.module("learnToWeb")
 
 		var newDevice = {
 			name: $scope.newDeviceName,
-			ip: $scope.newDeviceIP,
-			mac: $scope.newDeviceMAC
+			ipAdress: $scope.newDeviceIP,
+			macAdress: $scope.newDeviceMAC,
+			type: $scope.newDeviceType
 		}
 		$scope.newDeviceName = "";
 		$scope.newDeviceIP = "";
 		$scope.newDeviceMAC = "";
-
+		$scope.newDeviceType = "";
 
 		deviceStorage.add(newDevice)
 		// .then(function(resp) {
