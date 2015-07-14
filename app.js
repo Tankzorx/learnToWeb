@@ -4,12 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
 
 var routes = require('./config/routes');
+var authConfig = require('./config/auth');
 // Initiates the connection.
 var db = require("./config/db");
 
 var app = express();
+
+// Setup passport
+authConfig(app,passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

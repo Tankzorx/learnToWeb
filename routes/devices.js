@@ -55,7 +55,6 @@ router.post("/delete",function(req,res,next) {
       res.status(500);
       res.end();
     } else {
-      console.log("Deleted device: " + deviceId)
       res.send("Deleted device");
     }
 
