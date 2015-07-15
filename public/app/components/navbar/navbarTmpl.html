@@ -9,16 +9,30 @@
         <li ng-repeat="item in navItems" ng-class="$index == selectedTab ? 'active' : ''" >
           <a href="#{{item}}" ng-click="setActive($index)">{{item}}</a>
         </li>
-        <li>
-          <form>
-            <input type="text" ng-model="user.email" value="" placeholder="Email">
-            <input type="text" ng-model="user.password" value="" placeholder="Password">
-            <input type="submit" ng-click="logIn()" value="Login">
-          </form>
-        </li>
+
 
       </ul>
+      <form id="signin" class="navbar-form navbar-right" role="form">
+
+          <div class="input-group">
+              <span class="input-group-addon">
+                  <i class="glyphicon glyphicon-user"></i>
+              </span>
+              <input id="email" class="form-control" type="email" placeholder="Email Address" value="" ng-model="user.email"></input>
+          </div>
+          <div class="input-group">
+              <span class="input-group-addon">
+                  <i class="glyphicon glyphicon-lock"></i>
+              </span>
+              <input id="password" class="form-control" type="password" placeholder="Password" value="" ng-model="user.password"></input>
+          </div>
+          <button class="btn btn-primary" ng-click="logIn()">
+              Login
+          </button>
+
+      </form>
     </div>
 
   </div>
 </nav>
+
