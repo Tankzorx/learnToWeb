@@ -15,6 +15,9 @@ app.config(function($routeProvider) {
 			resolve : {
 				devices : ["deviceStorage",function(deviceStorage) {
 					return deviceStorage.get();
+				}],
+				user : ["userProfile",function(userProfile) {
+					return userProfile.loggedIn();
 				}]
 			}
 		})

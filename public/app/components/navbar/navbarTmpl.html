@@ -9,8 +9,16 @@
         <li ng-repeat="item in navItems" ng-class="$index == selectedTab ? 'active' : ''" >
           <a href="#{{item}}" ng-click="setActive($index)">{{item}}</a>
         </li>
+        <li>
+          <form>
+            <input type="text" ng-model="user.email" value="" placeholder="Email">
+            <input type="text" ng-model="user.password" value="" placeholder="Password">
+            <input type="submit" ng-click="logIn()" value="Login">
+          </form>
+        </li>
 
       </ul>
     </div>
+
   </div>
 </nav>
