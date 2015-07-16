@@ -10,12 +10,12 @@ var isAuthenticated = function (req, res, next) {
   }
 }
 
-module.exports = function(app,express) {
+module.exports = function(app,express,passport) {
 	app.get("/loggedin", function(req,res) {
 		res.send(req.isAuthenticated() ? req.user : "0");
 	});
 
 	app.use('/', routes);
-	app.use('/users', users);
+	app.use('/users', users(passport));
 	app.use("/devices", devices);
 }
