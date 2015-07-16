@@ -24,6 +24,7 @@ module.exports = function(app,passport) {
 		passReqToCallback : true
 	},
 	function(req,email,password,done) {
+		console.log("ehhlo");
 		User.findOne({ 'email' : email },
 			function(err,user) {
 				if (err) {return done(err)};
@@ -48,5 +49,5 @@ module.exports = function(app,passport) {
 }
 
 var isValidPassword = function(user,password) {
-	return bCrypt.compareSync(password,user.password);
+	return password===user.password;
 };
