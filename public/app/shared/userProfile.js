@@ -13,9 +13,14 @@ angular.module("learnToWeb")
 					}
 				});
 		},
-		logIn: function(username,password) {
+		logIn: function(email,password) {
 			console.log("logIn() was called in userProfile.js");
-			return true;
+			var user = {"email" : email, "password" : password}
+			return $http.post("/users/login", user)
+				.then(function(resp) {
+					console.log(resp);
+
+				})
 		}
 	};
 	return userProfile;
