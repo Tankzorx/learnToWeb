@@ -20,11 +20,43 @@ module.exports = function(app,passport) {
 		})
 	});
 
-	passport.use("login", new LocalStrategy({
-		passReqToCallback : true
+	passport.use("signup", new LocalStrategy({
+		passReqToCallback: true,
+		usernameField: "email"
 	},
 	function(req,email,password,done) {
-		console.log("ehhlo");
+		console.log("HEJ")
+		console.log(email);
+		console.log(password);
+		User.findOne({"email" : email}, function(err,user) {
+			if (err) {
+				console.log("ERR IN SIGNUP: " + err)
+				return done(err);
+			}
+			if (user) {
+				console.log("USER ALREADY EXISTS: " + user)
+				return done(null,false);
+			} else {
+				var newUser = new User();
+				newUser.username = req.body.username;
+				newUser.password = createHash(req.body.password);
+				newUser.email    = req.body.email;
+				newUser.type     = 1;
+
+				newUser.save(function(err) {
+					if (err) {console.log(err)};
+					console.log("Added user: " + newUser.email);
+					return done(null,newUser);
+				})
+			}
+		})
+	}));
+
+	passport.use("login", new LocalStrategy({
+		passReqToCallback : true,
+		usernameField: "email"
+	},
+	function(req,email,password,done) {
 		User.findOne({ 'email' : email },
 			function(err,user) {
 				if (err) {return done(err)};
@@ -49,5 +81,9 @@ module.exports = function(app,passport) {
 }
 
 var isValidPassword = function(user,password) {
-	return password===user.password;
+	return bCrypt.compareSync(password,user.password);
 };
+
+var createHash = function(password){
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}

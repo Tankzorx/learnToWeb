@@ -13,22 +13,8 @@ module.exports = function(passport) {
 		res.send(req.user);
 	});
 
-	router.post("/signup",function(req,res) {
-		var reqUser = req.body;
-		var userObject =  {
-			email : reqUser.email,
-			password : reqUser.passwordHash,
-			username : reqUser.username,
-			type : 1
-		}
-
-		var newUser = new User(userObject);
-
-		newUser.save(function(err) {
-			if (err) {console.log(err)};
-			console.log("Added user: " + userObject.email);
-			res.sendStatus(200);
-		})
+	router.post("/signup",passport.authenticate("signup"),function(req,res) {
+		res.send(res.user);
 	});
 
 	return router;
