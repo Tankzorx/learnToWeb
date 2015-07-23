@@ -5,11 +5,12 @@ angular.module("learnToWeb")
 		loggedIn: function() {
 			return $http.get('loggedin')
 				.then(function(resp) {
-					console.log(resp);	
+					//console.log(resp);	
 					if (resp.data === "0") {
-						//$location.url("/home")
+						$location.url("/home")
+						return false
 					} else {
-						currentUser = resp.data;
+						return true;
 					}
 				});
 		},
@@ -18,9 +19,19 @@ angular.module("learnToWeb")
 			var user = {"email" : email, "password" : password}
 			return $http.post("/users/login", user)
 				.then(function(resp) {
-					console.log(resp);
-
+					userProfile.currentUser = resp;
+					return true;
+				},function(err) {
+					return false;
 				})
+		},
+		logOut: function() {
+			console.log("logOut() was called in userProfile.js");
+			return $http.get("/users/logout")
+			.then(function(resp) {
+				userProfile.currentUser = {}
+				return true;
+			})
 		}
 	};
 	return userProfile;

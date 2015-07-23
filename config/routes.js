@@ -6,7 +6,7 @@ var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-  	res.send(401);
+  	res.sendStatus(401);
   }
 }
 
@@ -17,5 +17,5 @@ module.exports = function(app,express,passport) {
 
 	app.use('/', routes);
 	app.use('/users', users(passport));
-	app.use("/devices", devices);
+	app.use("/devices",isAuthenticated, devices);
 }

@@ -17,6 +17,11 @@ module.exports = function(passport) {
 		res.send(res.user);
 	});
 
+	router.get("/logout",function(req,res) {
+		req.logout();
+		res.sendStatus(200)
+	})
+
 	return router;
 
 }

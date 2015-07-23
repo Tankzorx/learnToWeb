@@ -13,11 +13,11 @@ app.config(function($routeProvider) {
 			templateUrl : "app/components/devices/devices.html",
 			controller : "devicesCtrl",
 			resolve : {
-				devices : ["deviceStorage",function(deviceStorage) {
-					return deviceStorage.get();
-				}],
 				user : ["userProfile",function(userProfile) {
 					return userProfile.loggedIn();
+				}],
+				devices : ["deviceStorage",function(deviceStorage) {
+					return deviceStorage.get();
 				}]
 			}
 		})
@@ -25,6 +25,11 @@ app.config(function($routeProvider) {
 		.when("/profile", {
 			templateUrl : "app/components/profile/profile.html",
 			controller : "profileCtrl"
+		})
+
+		.when("/signup", {
+			templateUrl : "app/components/signup/signup.html",
+			controller : "signupCtrl"
 		})
 
 

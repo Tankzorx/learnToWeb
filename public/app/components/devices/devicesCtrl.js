@@ -3,7 +3,7 @@ angular.module("learnToWeb")
 
 	$scope.devices = deviceStorage.devices;
 	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
-	$scope.configMode = true;
+	$scope.configMode = false;
 
 	$scope.newDeviceName = "";
 
