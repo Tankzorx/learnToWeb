@@ -1,5 +1,6 @@
 angular.module("learnToWeb")
-.controller("devicesCtrl",["$scope","deviceStorage",function($scope,deviceStorage) {
+.controller("devicesCtrl",["$scope","deviceStorage","$rootScope",function($scope,deviceStorage,$rootScope) {
+	console.log("In deviceCtrl")
 
 	$scope.devices = deviceStorage.devices;
 	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
@@ -22,10 +23,10 @@ angular.module("learnToWeb")
 		$scope.newDeviceType = "";
 
 		deviceStorage.add(newDevice)
-		// .then(function(resp) {
-		// 	console.log($scope.devices.length);
-		// })
-		// <i class="fa fa-cog fa-spin"></i>
+		.then(function(resp) {
+
+		})
+		$rootScope.loading = true;
 	}
 
 	$scope.removeDevice = function(deviceId) {

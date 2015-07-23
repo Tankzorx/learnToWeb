@@ -7,7 +7,6 @@ angular.module("learnToWeb")
 				.then(function(resp) {
 					//console.log(resp);	
 					if (resp.data === "0") {
-						$location.url("/home")
 						return false
 					} else {
 						return true;
@@ -32,6 +31,13 @@ angular.module("learnToWeb")
 				userProfile.currentUser = {}
 				return true;
 			})
+		},
+		register: function(userObject) {
+			console.log("register() was called in userProfile.js")
+			return $http.post("/users/signup", userObject)
+			.then(function(resp) {
+				console.log("Got response from server: " + resp);
+			});
 		}
 	};
 	return userProfile;

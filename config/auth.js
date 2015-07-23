@@ -25,7 +25,6 @@ module.exports = function(app,passport) {
 		usernameField: "email"
 	},
 	function(req,email,password,done) {
-		console.log("HEJ")
 		console.log(email);
 		console.log(password);
 		User.findOne({"email" : email}, function(err,user) {

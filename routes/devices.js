@@ -3,20 +3,18 @@ var mongoose = require("mongoose");
 var router = express.Router();
 var Device = require("../models/deviceModel");
 
-var devices = {devices:
-                [
-                  {mac: "2a:da:21:fd:4f:1c" , ip : "111.111.111", name:"Maskine1"},
-                  {mac: "2a:da:21:fd:4f:1c" , ip : "222.222.222", name:"Maskine2"}
-                ]
-              };
-
-
+// devices/*
 router.get("/",function(req, res, next) {
+
+    setTimeout(function() {
 
     Device.find(function(err,allDevices) {
       if (err) {console.log(err)};
       res.json(allDevices);
     })
+      
+    }, 400);
+
 
 });
 

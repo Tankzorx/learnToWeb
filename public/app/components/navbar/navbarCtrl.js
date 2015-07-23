@@ -1,7 +1,7 @@
 angular.module("learnToWeb")
 .controller("navbarCtrl",["$scope","$location","$timeout","userProfile",
     function($scope,$location,$timeout,userProfile) {
-    
+    console.log("in navbarCtrl")
     $scope.navItems = 
     [
     	{
@@ -51,6 +51,7 @@ angular.module("learnToWeb")
     	userProfile.logOut()
         .then(function(success) {
             $scope.isLoggedIn = !success;
+            $location.url("/home")
         })
     };
 }])
