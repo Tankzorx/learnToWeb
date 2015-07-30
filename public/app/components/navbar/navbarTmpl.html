@@ -6,8 +6,8 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 
-        <li ng-repeat="item in navItems" ng-class="$index == selectedTab ? 'active' : ''"  ng-show="item.showWhenLoggedOut && item.showWhenLoggedIn || isLoggedIn && item.showWhenLoggedIn || !isLoggedIn && item.showWhenLoggedOut">
-          <a href="#{{item.href}}" ng-click="setActive($index)">{{item.text}}</a>
+        <li ng-repeat="item in navItems" ng-class="item.href == selectedTab ? 'active' : ''"  ng-show="item.showWhenLoggedOut && item.showWhenLoggedIn || isLoggedIn && item.showWhenLoggedIn || !isLoggedIn && item.showWhenLoggedOut">
+          <a href="#{{item.href}}" ng-click="setActive(item.href)">{{item.text}}</a>
         </li>
 
 

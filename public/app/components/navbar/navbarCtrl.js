@@ -1,7 +1,12 @@
 angular.module("learnToWeb")
 .controller("navbarCtrl",["$scope","$location","$timeout","userProfile",
     function($scope,$location,$timeout,userProfile) {
-    console.log("in navbarCtrl")
+
+    console.log("in navbarCtrl");
+    // Check if user is logged in.
+    userProfile.loggedIn().then(function(success) {
+        $scope.isLoggedIn = success;
+    });
     $scope.navItems = 
     [
     	{
@@ -30,27 +35,28 @@ angular.module("learnToWeb")
         }
     ];
 
-    $scope.selectedTab = $scope.navItems.indexOf($location.path().slice(1));
+    console.log($location.path().slice(1))
+    $scope.selectedTab = $location.path().slice(1);
 
-    $scope.setActive = function(index) {
-        $scope.selectedTab = index;
+    $scope.setActive = function(tabName) {
+        $scope.selectedTab = tabName;
     };
 
     $scope.logIn = function() {
         userProfile.logIn($scope.user.email,$scope.user.password)
         .then(function(success) {
+            console.log(success);
             $scope.isLoggedIn = success;
+            $scope.selectedTab = "devices";
+            $location.url("/devices");
         })
     };
-
-    userProfile.loggedIn().then(function(success) {
-        $scope.isLoggedIn = success;
-    });
 
     $scope.logOut = function() {
     	userProfile.logOut()
         .then(function(success) {
             $scope.isLoggedIn = !success;
+            $scope.selectedTab = "home";
             $location.url("/home")
         })
     };

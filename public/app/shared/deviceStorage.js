@@ -9,6 +9,10 @@ angular.module("learnToWeb")
 					angular.copy(resp.data,deviceStorage.devices);
 					$rootScope.loading = false;
 					return deviceStorage.devices;
+				},function(err) {
+					$rootScope.loading = false;
+					console.log("Error when fetching devices: ")
+					console.log(err)
 				});
 		},
 		add: function(device) {
@@ -21,6 +25,7 @@ angular.module("learnToWeb")
 				$rootScope.loading = false;
 			}, function() {
 				//err
+				$rootScope.loading = false;
 				console.log("Error happened when adding device");
 			});
 		},
@@ -37,8 +42,8 @@ angular.module("learnToWeb")
 				};
 				$rootScope.loading = false;
 			},function(err) {
+				$rootScope.loading = false;
 				console.log(err);
-				//err
 			})
 
 		},
