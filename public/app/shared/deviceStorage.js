@@ -13,6 +13,8 @@ angular.module("learnToWeb")
 					$rootScope.loading = false;
 					console.log("Error when fetching devices: ")
 					console.log(err)
+					deviceStorage.devices = [];
+					return false;
 				});
 		},
 		add: function(device) {

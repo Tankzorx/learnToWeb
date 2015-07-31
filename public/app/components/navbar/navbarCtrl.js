@@ -5,7 +5,9 @@ angular.module("learnToWeb")
     console.log("in navbarCtrl");
     // Check if user is logged in.
     userProfile.loggedIn().then(function(success) {
-        $scope.isLoggedIn = success;
+        $scope.isLoggedIn = true;
+    },function(err) {
+        $scope.isLoggedIn = false;
     });
     $scope.navItems = 
     [
