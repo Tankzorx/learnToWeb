@@ -24,7 +24,12 @@ app.config(function($routeProvider) {
 
 		.when("/profile", {
 			templateUrl : "app/components/profile/profile.html",
-			controller : "profileCtrl"
+			controller : "profileCtrl",
+			resolve : {
+				user : ["userProfile",function(userProfile) {
+					return userProfile.loggedIn();
+				}]			
+			}
 		})
 
 		.when("/signup", {

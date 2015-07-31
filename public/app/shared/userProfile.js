@@ -1,12 +1,11 @@
 angular.module("learnToWeb")
-.factory("userProfile",['$http','$location',"$q",function($http,$location,$q) {
+.factory("userProfile",['$http','$location',"$q","$rootScope",function($http,$location,$q,$rootScope) {
 	var userProfile = {
 		currentUser : {},
 		loggedIn: function() {
 			var loggedInPromise = $q.defer();
 			$http.get('loggedin')
 				.then(function(resp) {
-					//console.log(resp);	
 					if (resp.data === "0") {
 						console.log("No user logged in.")
 						$location.url("/home");						
@@ -14,20 +13,22 @@ angular.module("learnToWeb")
 					} else {
 						userProfile.currentUser = resp.data;
 						console.log("Current user: " + userProfile.currentUser.username)
-
-						loggedInPromise.resolve();
+						loggedInPromise.resolve(userProfile.currentUser);
 					}
 				});
 			return loggedInPromise.promise;
 		},
 		logIn: function(email,password) {
+			$rootScope.loading = true;
 			console.log("logIn() was called in userProfile.js");
 			var user = {"email" : email, "password" : password}
 			return $http.post("/users/login", user)
 				.then(function(resp) {
 					userProfile.currentUser = resp;
+					$rootScope.loading = false;
 					return true;
 				},function(err) {
+					$rootScope.loading = false;
 					return false;
 				})
 		},

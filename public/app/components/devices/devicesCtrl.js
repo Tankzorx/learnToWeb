@@ -1,7 +1,9 @@
 angular.module("learnToWeb")
-.controller("devicesCtrl",["$scope","deviceStorage","$rootScope",function($scope,deviceStorage,$rootScope) {
+.controller("devicesCtrl",["$scope","deviceStorage","$rootScope","user","devices",function($scope,deviceStorage,$rootScope,user,devices) {
 	console.log("In deviceCtrl")
 
+	console.log(user);
+	console.log(devices);
 	$scope.devices = deviceStorage.devices;
 	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
 	$scope.configMode = false;
