@@ -4,18 +4,20 @@ angular.module("learnToWeb")
 		devices : [],
 		get: function() {
 			$rootScope.loading = true;
-			return $http.get('devices')
+			var getPromise = $q.defer();
+			$http.get('devices')
 				.then(function(resp) {
 					angular.copy(resp.data,deviceStorage.devices);
 					$rootScope.loading = false;
-					return deviceStorage.devices;
+					getPromise.resolve(deviceStorage.devices);
 				},function(err) {
 					$rootScope.loading = false;
 					console.log("Error when fetching devices: ")
 					console.log(err)
 					deviceStorage.devices = [];
-					return false;
+					getPromise.reject(err);
 				});
+			return getPromise.promise;
 		},
 		add: function(device) {
 			$rootScope.loading = true;
@@ -51,13 +53,20 @@ angular.module("learnToWeb")
 		},
 		update: function(newdevice) {
 			$rootScope.loading = true;
-			var loggedInPromise = $q.defer();
+			var updatePromise = $q.defer();
 			$http.put("devices/update",newdevice)
 			.then(function(resp) {
 				console.log("Update success");
+				console.log(resp);
+				$rootScope.loading = false;
+				updatePromise.resolve(resp);
 			},function(err) {
 				console.log("Update failed: " + err);
+				$rootScope.loading = false;
+				updatePromise.reject(err);
 			})
+
+			return updatePromise.promise;
 			
 		}
 	};

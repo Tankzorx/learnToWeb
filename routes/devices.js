@@ -72,12 +72,12 @@ router.put("/update",function(req,res,next) {
       lastUpdated : Date.now(),
     }
 
-    Device.update({"_id" : rawDevice.id},updatedDevice,function(err,device) {
+    Device.update({"_id" : rawDevice.id},updatedDevice,function(err,result) {
       if (err) {res.status(401);console.log(err)};
 
       console.log("Updated device: " + req.body.name);
       res.status(200);
-      res.end();
+      res.send(result);
     })
 
   },300);

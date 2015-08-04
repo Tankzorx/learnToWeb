@@ -24,12 +24,27 @@
 		</tr>
 
 		<tr ng-repeat="device in devices | reverse" ng-class="$index == currEdit ? 'edit' : ''">
-			<td><div ng-show="$index == currEdit">{{device.name}}</div></td>
-			<td><div ng-show="$index == currEdit">{{device.ipAdress}}</div></td>
-			<td><div ng-show="$index == currEdit">{{device.macAdress}}</div></td>
-			<td><div ng-show="$index == currEdit">{{device.type}}</div></td>
+			<td>
+				<input ng-model="editDevice[device._id].name" ng-show="$index == currEdit" placeholder="{{device.name}}"></input>
+				<div ng-hide="$index == currEdit">{{device.name}}</div>
+			</td>
+			<td>
+				<input ng-model="editDevice[device._id].ipAdress" ng-show="$index == currEdit" placeholder="{{device.ipAdress}}"></input>
+				<div ng-hide="$index == currEdit">{{device.ipAdress}}</div>
+			</td>
+			<td>
+				<input ng-model="editDevice[device._id].macAdress" ng-show="$index == currEdit" placeholder="{{device.macAdress}}"></input>
+				<div ng-hide="$index == currEdit">{{device.macAdress}}</div>
+			</td>
+			<td>
+				<input ng-model="editDevice[device._id].type" ng-show="$index == currEdit" placeholder="{{device.type}}"></input>
+				<div ng-hide="$index == currEdit">{{device.type}}</div>
+			</td>
 			<td>{{device.addedDate | date : medium}}</td>
-			<td ng-show="configMode"><button class="btn btn-warning" ng-click="editThis($index)">Edit this</button></td>
+			<td ng-show="configMode">
+				<button class="btn btn-warning" ng-click="editThis($index)" ng-hide="$index == currEdit">Edit this</button>
+				<button class="btn btn-info" ng-click="update(device._id)" ng-show="$index == currEdit">Save update</button>
+			</td>
 			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device._id)">Remove Device</button></td>
 		</tr>
 	</tbody>	

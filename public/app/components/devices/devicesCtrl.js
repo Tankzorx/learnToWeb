@@ -7,6 +7,7 @@ angular.module("learnToWeb")
 	$scope.devices = deviceStorage.devices;
 	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
 	$scope.configMode = false;
+	$scope.editDevice = {};
 
 	$scope.newDeviceName = "";
 
@@ -36,12 +37,29 @@ angular.module("learnToWeb")
 	}
 
 	$scope.editThis = function(index) {
+		$scope.editDevice = {};
 		console.log(index);
 		$scope.currEdit = index;
 	}
 
 	$scope.switchMode = function() {
 		$scope.configMode = !$scope.configMode;
+	}
+
+	$scope.update = function(id) {
+		console.log("Called update");
+		console.log($scope.editDevice[id].name)
+		console.log($scope.editDevice[id].ipAdress)
+		console.log($scope.editDevice[id].macAdress)
+		console.log($scope.editDevice[id].type)
+		$scope.editDevice[id].id = id;
+		deviceStorage.update($scope.editDevice[id])
+		.then(function(resp) {
+			deviceStorage.get()
+		},function(err) {
+
+		})
+		$scope.currEdit = -1;
 	}
 
 
