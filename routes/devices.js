@@ -57,6 +57,31 @@ router.post("/delete",function(req,res,next) {
     }
 
   })
+});
+
+router.put("/update",function(req,res,next) {
+
+  setTimeout(function() {
+
+    var rawDevice = req.body;
+    var updatedDevice = {
+      name : rawDevice.name,
+      type : rawDevice.type,
+      macAdress : rawDevice.macAdress,
+      ipAdress : rawDevice.ipAdress,
+      lastUpdated : Date.now(),
+    }
+
+    Device.update({"_id" : rawDevice.id},updatedDevice,function(err,device) {
+      if (err) {res.status(401);console.log(err)};
+
+      console.log("Updated device: " + req.body.name);
+      res.status(200);
+      res.end();
+    })
+
+  },300);
+
 })
 
 

@@ -1,5 +1,5 @@
 angular.module("learnToWeb")
-.factory("deviceStorage",['$http',"$rootScope",function($http,$rootScope) {
+.factory("deviceStorage",['$http',"$rootScope","$q",function($http,$rootScope,$q) {
 	var deviceStorage = {
 		devices : [],
 		get: function() {
@@ -49,8 +49,16 @@ angular.module("learnToWeb")
 			})
 
 		},
-		update: function(olddevice,newdevice) {
-
+		update: function(newdevice) {
+			$rootScope.loading = true;
+			var loggedInPromise = $q.defer();
+			$http.put("devices/update",newdevice)
+			.then(function(resp) {
+				console.log("Update success");
+			},function(err) {
+				console.log("Update failed: " + err);
+			})
+			
 		}
 	};
 	return deviceStorage;

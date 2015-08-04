@@ -35,6 +35,11 @@ angular.module("learnToWeb")
 		deviceStorage.delete(deviceId);
 	}
 
+	$scope.editThis = function(index) {
+		console.log(index);
+		$scope.currEdit = index;
+	}
+
 	$scope.switchMode = function() {
 		$scope.configMode = !$scope.configMode;
 	}

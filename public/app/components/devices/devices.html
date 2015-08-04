@@ -23,13 +23,13 @@
 			<td><button class="btn btn-primary" ng-click="addDevice()">Add Device</button></td>
 		</tr>
 
-		<tr ng-repeat="device in devices | reverse">
-			<td>{{device.name}}</td>
-			<td>{{device.ipAdress}}</td>
-			<td>{{device.macAdress}}</td>
-			<td>{{device.type}}</td>
+		<tr ng-repeat="device in devices | reverse" ng-class="$index == currEdit ? 'edit' : ''">
+			<td><div ng-show="$index == currEdit">{{device.name}}</div></td>
+			<td><div ng-show="$index == currEdit">{{device.ipAdress}}</div></td>
+			<td><div ng-show="$index == currEdit">{{device.macAdress}}</div></td>
+			<td><div ng-show="$index == currEdit">{{device.type}}</div></td>
 			<td>{{device.addedDate | date : medium}}</td>
-			<td ng-show="!configMode"></td>
+			<td ng-show="configMode"><button class="btn btn-warning" ng-click="editThis($index)">Edit this</button></td>
 			<td ng-show="configMode"><button class="btn btn-danger" ng-click="removeDevice(device._id)">Remove Device</button></td>
 		</tr>
 	</tbody>	

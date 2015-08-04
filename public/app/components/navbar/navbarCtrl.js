@@ -34,7 +34,7 @@ angular.module("learnToWeb")
             text : "Sign Up!",
             showWhenLoggedOut : true,
             showWhenLoggedIn  : false
-        }
+        },
     ];
 
     console.log($location.path().slice(1))
