@@ -32,24 +32,26 @@ router.post("/add", function(req,res,next) {
 
 	setTimeout(function() {
 
-    var clientDevice = req.body
-    var deviceObject = {
-      name:clientDevice.name,
-      type:clientDevice.type,
-      macAdress:clientDevice.macAdress,
-      ipAdress:clientDevice.ipAdress,
-      owner: req.user._id,
-      members:[req.user._id],
-      addedDate: Date.now(),
-      lastUpdated: Date.now()
-    }
-    var newDevice = new Device(deviceObject);
+    // var clientDevice = req.body
+    // var deviceObject = {
+    //   name:clientDevice.name,
+    //   type:clientDevice.type,
+    //   macAdress:clientDevice.macAdress,
+    //   ipAdress:clientDevice.ipAdress,
+    //   owner: req.user._id,
+    //   members:[req.user._id],
+    //   addedDate: Date.now(),
+    //   lastUpdated: Date.now()
+    // }
+    // var newDevice = new Device(deviceObject);
     
-    newDevice.save(function(err) {
-      if (err) {console.log(err)};
-      console.log("Inserted device: " + newDevice._id);
-      res.json(newDevice);
-    })
+    // newDevice.save(function(err) {
+    //   if (err) {console.log(err)};
+    //   console.log("Inserted device: " + newDevice._id);
+    //   res.json(newDevice);
+    // })
+
+    
 
   }, 300);
 
