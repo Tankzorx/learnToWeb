@@ -64,20 +64,41 @@ router.put("/update",function(req,res,next) {
   setTimeout(function() {
 
     var rawDevice = req.body;
-    var updatedDevice = {
-      name : rawDevice.name,
-      type : rawDevice.type,
-      macAdress : rawDevice.macAdress,
-      ipAdress : rawDevice.ipAdress,
-      lastUpdated : Date.now(),
+    var updatedDevice = {};
+    var parseResults = {};
+
+    for (var prop in rawDevice) {
+      if (rawDevice.hasOwnProperty(prop) && ["ipAdress","macAdress","name","type"].indexOf(prop) > -1) {
+        switch(prop) {
+          case "ipAdress":
+            updatedDevice[prop] = rawDevice[prop];
+            parseResults[prop] = "true";
+            break;
+          case "macAdress":
+            var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+            if(rawDevice[prop].search(macRegex) > -1) {
+              updatedDevice[prop] = rawDevice[prop];
+              parseResults[prop] = "true";
+            } else {
+              parseResults[prop] = "false";
+            }
+            break;
+          default:
+            updatedDevice[prop] = rawDevice[prop];
+            parseResults[prop] = "true";
+
+            break;
+        }
+      }
     }
+    console.log(updatedDevice);
 
     Device.update({"_id" : rawDevice.id},updatedDevice,function(err,result) {
-      if (err) {res.status(401);console.log(err)};
+      if (err) {res.status(500);console.log(err)};
 
       console.log("Updated device: " + req.body.name);
       res.status(200);
-      res.send(result);
+      res.send(parseResults);
     })
 
   },300);

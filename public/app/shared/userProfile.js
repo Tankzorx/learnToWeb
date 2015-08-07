@@ -1,5 +1,5 @@
 angular.module("learnToWeb")
-.factory("userProfile",['$http','$location',"$q","$rootScope",function($http,$location,$q,$rootScope) {
+.factory("userProfile",['$http','$location',"$q","$rootScope","loadingService",function($http,$location,$q,$rootScope,loadingService) {
 	var userProfile = {
 		currentUser : {},
 		loggedIn: function() {
@@ -19,16 +19,16 @@ angular.module("learnToWeb")
 			return loggedInPromise.promise;
 		},
 		logIn: function(email,password) {
-			$rootScope.loading = true;
+			loadingService.startLoad();
 			console.log("logIn() was called in userProfile.js");
 			var user = {"email" : email, "password" : password}
 			return $http.post("/users/login", user)
 				.then(function(resp) {
 					userProfile.currentUser = resp;
-					$rootScope.loading = false;
+					loadingService.stopLoad();
 					return true;
 				},function(err) {
-					$rootScope.loading = false;
+					loadingService.stopLoad();
 					return false;
 				})
 		},

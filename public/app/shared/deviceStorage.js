@@ -1,17 +1,17 @@
 angular.module("learnToWeb")
-.factory("deviceStorage",['$http',"$rootScope","$q",function($http,$rootScope,$q) {
+.factory("deviceStorage",['$http',"$rootScope","$q","loadingService",function($http,$rootScope,$q,loadingService) {
 	var deviceStorage = {
 		devices : [],
 		get: function() {
-			$rootScope.loading = true;
+			loadingService.startLoad();
 			var getPromise = $q.defer();
 			$http.get('devices')
 				.then(function(resp) {
 					angular.copy(resp.data,deviceStorage.devices);
-					$rootScope.loading = false;
+					loadingService.stopLoad();
 					getPromise.resolve(deviceStorage.devices);
 				},function(err) {
-					$rootScope.loading = false;
+					loadingService.stopLoad();
 					console.log("Error when fetching devices: ")
 					console.log(err)
 					deviceStorage.devices = [];
@@ -20,21 +20,21 @@ angular.module("learnToWeb")
 			return getPromise.promise;
 		},
 		add: function(device) {
-			$rootScope.loading = true;
+			loadingService.startLoad();
 			return $http.post('devices/add',device)
 			.then(function(resp) {
 				// Success
 				deviceStorage.devices.push(resp.data);
 				console.log("Added device");
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 			}, function() {
 				//err
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 				console.log("Error happened when adding device");
 			});
 		},
 		delete: function(deviceId) {
-			$rootScope.loading = true;
+			loadingService.startLoad();
 			console.log("Deleting")
 			var elem = {"id":deviceId};
 			return $http.post('devices/delete',elem)
@@ -44,25 +44,25 @@ angular.module("learnToWeb")
 				    deviceStorage.devices.splice(i,1);
 				  };
 				};
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 			},function(err) {
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 				console.log(err);
 			})
 
 		},
 		update: function(newdevice) {
-			$rootScope.loading = true;
+			loadingService.startLoad();
 			var updatePromise = $q.defer();
 			$http.put("devices/update",newdevice)
 			.then(function(resp) {
 				console.log("Update success");
 				console.log(resp);
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 				updatePromise.resolve(resp);
 			},function(err) {
 				console.log("Update failed: " + err);
-				$rootScope.loading = false;
+				loadingService.stopLoad();
 				updatePromise.reject(err);
 			})
 
