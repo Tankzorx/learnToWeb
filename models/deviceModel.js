@@ -12,4 +12,69 @@ var deviceSchema = new Schema({
 	lastUpdated: Date
 });
 
-module.exports = mongoose.model("Device",deviceSchema);
+deviceSchema.statics.getAccessibleDevices = function (userid,cb) {
+	console.log("Getting accessible devices for: " + userid);
+	this.find({ members : userid},function(err,data) {
+		if (err) {cb(err)};
+		cb(null,data);
+	})
+}
+
+deviceSchema.methods.verifyAndSave = function (req,cb) {
+	console.log("Verifying and saving device for: " + req.user._id);
+	var clientDevice = req.body
+	var statusObj = {
+		name 		: false,
+		ipAdress 	: false,
+		macAdress	: false,
+		type		: false,
+	}
+	var verifiedDevice = {
+		owner		: req.user._id,
+		members		:[req.user._id],
+		addedDate	: Date.now(),
+		lastUpdated	: Date.now(),
+	}
+
+	var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+	var ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+	if (clientDevice.macAdress 
+	&& clientDevice.macAdress.search(macRegex) > -1) {
+		console.log("OK: MACADRESS")
+		statusObj.macAdress = true;
+		verifiedDevice.macAdress = clientDevice.macAdress;
+	};
+	if (clientDevice.name
+	&& clientDevice.name.length > 0) {
+		console.log("OK: NAME")
+		statusObj.name = true;
+		verifiedDevice.name = clientDevice.name;
+	};
+	if (clientDevice.ipAdress
+	&& clientDevice.name.search(ipRegex)) {
+		console.log("OK: IPADRESS")
+		statusObj.ipAdress = true;
+		verifiedDevice.ipAdress = clientDevice.ipAdress;	
+	};
+	if (clientDevice.type
+	&& clientDevice.type.length > 0) {
+		console.log("OK: TYPE")
+		statusObj.type = true;
+		verifiedDevice.type = clientDevice.type;
+	};
+
+	var newDevice = new Device(verifiedDevice);
+
+	newDevice.save(function(err) {
+		if (err) {
+			cb(err,statusObj);
+		}
+		cb(null,statusObj);
+
+	})
+
+}
+
+var Device = mongoose.model("Device",deviceSchema)
+
+module.exports = Device;

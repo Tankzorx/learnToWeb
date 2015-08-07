@@ -6,15 +6,25 @@ var Device = require("../models/deviceModel");
 // devices/*
 router.get("/",function(req, res, next) {
 
-    setTimeout(function() {
+  setTimeout(function() {
 
-    Device.find(function(err,allDevices) {
-      if (err) {console.log(err)};
-      res.json(allDevices);
-    })
-      
-    }, 400);
 
+  console.log("userId in device route: " +  req.user._id);
+
+    // Device.find(function(err,allDevices) {
+    //   if (err) {console.log(err)};
+    //   res.json(allDevices);
+    // })
+
+  Device.getAccessibleDevices(req.user._id,function(err,data) {
+    if (err) {
+      res.status(500);
+      res.send(err);
+    };
+    res.send(data);
+  })
+
+}, 400);
 
 });
 
@@ -22,15 +32,14 @@ router.post("/add", function(req,res,next) {
 
 	setTimeout(function() {
 
-    var user = mongoose.Types.ObjectId();
     var clientDevice = req.body
     var deviceObject = {
       name:clientDevice.name,
       type:clientDevice.type,
       macAdress:clientDevice.macAdress,
       ipAdress:clientDevice.ipAdress,
-      owner: user,
-      members:[user],
+      owner: req.user._id,
+      members:[req.user._id],
       addedDate: Date.now(),
       lastUpdated: Date.now()
     }
@@ -42,7 +51,7 @@ router.post("/add", function(req,res,next) {
       res.json(newDevice);
     })
 
-	}, 300);
+  }, 300);
 
 });
 
@@ -71,23 +80,23 @@ router.put("/update",function(req,res,next) {
       if (rawDevice.hasOwnProperty(prop) && ["ipAdress","macAdress","name","type"].indexOf(prop) > -1) {
         switch(prop) {
           case "ipAdress":
-            updatedDevice[prop] = rawDevice[prop];
-            parseResults[prop] = "true";
-            break;
+          updatedDevice[prop] = rawDevice[prop];
+          parseResults[prop] = "true";
+          break;
           case "macAdress":
-            var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-            if(rawDevice[prop].search(macRegex) > -1) {
-              updatedDevice[prop] = rawDevice[prop];
-              parseResults[prop] = "true";
-            } else {
-              parseResults[prop] = "false";
-            }
-            break;
-          default:
+          var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+          if(rawDevice[prop].search(macRegex) > -1) {
             updatedDevice[prop] = rawDevice[prop];
             parseResults[prop] = "true";
+          } else {
+            parseResults[prop] = "false";
+          }
+          break;
+          default:
+          updatedDevice[prop] = rawDevice[prop];
+          parseResults[prop] = "true";
 
-            break;
+          break;
         }
       }
     }
