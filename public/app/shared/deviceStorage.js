@@ -24,7 +24,7 @@ angular.module("learnToWeb")
 			return $http.post('devices/add',device)
 			.then(function(resp) {
 				// Success
-				deviceStorage.devices.push(resp.data);
+				deviceStorage.devices.push(device);
 				console.log("Added device");
 				loadingService.stopLoad();
 			}, function() {

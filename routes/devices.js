@@ -50,6 +50,14 @@ router.post("/add", function(req,res,next) {
     //   console.log("Inserted device: " + newDevice._id);
     //   res.json(newDevice);
     // })
+    Device.verifyAndSave(req,function(err,status) {
+      if (err) {
+        res.status(500);
+        res.send(status);
+      } else {
+        res.send(status);
+      }
+    });
 
     
 
