@@ -21,16 +21,23 @@ angular.module("learnToWeb")
 			macAdress: $scope.newDeviceMAC,
 			type: $scope.newDeviceType
 		}
-		$scope.newDeviceName = "";
-		$scope.newDeviceIP = "";
-		$scope.newDeviceMAC = "";
-		$scope.newDeviceType = "";
+
 
 		deviceStorage.add(newDevice)
 		.then(function(resp) {
-
+			deviceStorage.get()
+			.then(function() {
+				$scope.newDeviceName = "";
+				$scope.newDeviceIP = "";
+				$scope.newDeviceMAC = "";
+				$scope.newDeviceType = "";
+			},function(err) {
+				console.log("DeviceCtrl: Couldn't fetch devices.")
+				console.log(err);
+			})
+		},function(err) {
+			console.log("In error block in device CTRL");
 		})
-		//loadingService.startLoad();
 	}
 
 	$scope.removeDevice = function(deviceId) {

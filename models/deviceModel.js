@@ -22,69 +22,84 @@ deviceSchema.statics.getAccessibleDevices = function (userid,cb) {
 
 deviceSchema.statics.verifyAndSave = function (req,cb) {
 	console.log("Verifying and saving device for: " + req.user._id);
-	var clientDevice = req.body
-	var statusObj = {
-		name 		: false,
-		ipAdress 	: false,
-		macAdress	: false,
-		type		: false,
-	}
-	var verifiedDevice = {
-		owner		: req.user._id,
-		members		:[req.user._id],
-		addedDate	: Date.now(),
-		lastUpdated	: Date.now(),
-	}
+	
+	var verificationResult = verifyDevice(req.body);
+	if (verificationResult.verified) {
 
-	var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-	var ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-	var checkSum = 0;
-	if (clientDevice.macAdress 
-	&& clientDevice.macAdress.search(macRegex) > -1) {
-		console.log("OK: MACADRESS")
-		statusObj.macAdress = true;
-		checkSum += 1;
-		verifiedDevice.macAdress = clientDevice.macAdress;
-	};
-	if (clientDevice.name
-	&& clientDevice.name.length > 0) {
-		console.log("OK: NAME")
-		statusObj.name = true;
-		checkSum += 1;
-		verifiedDevice.name = clientDevice.name;
-	};
-	if (clientDevice.ipAdress
-	&& clientDevice.ipAdress.search(ipRegex) > -1) {
-		console.log("OK: IPADRESS")
-		statusObj.ipAdress = true;
-		checkSum += 1;
-		verifiedDevice.ipAdress = clientDevice.ipAdress;	
-	};
-	if (clientDevice.type
-	&& clientDevice.type.length > 0) {
-		console.log("OK: TYPE")
-		statusObj.type = true;
-		checkSum += 1;
-		verifiedDevice.type = clientDevice.type;
-	};
+		verificationResult.device.owner			= req.user._id;
+		verificationResult.device.members		= [req.user._id];
+		verificationResult.device.addedDate		= Date.now();
+		verificationResult.device.lastUpdated	= Date.now();
 
-	if (checkSum == 4) {
-		var newDevice = new Device(verifiedDevice);
+		var newDevice = new Device(verificationResult.device);
 
 		newDevice.save(function(err) {
 			if (err) {
-				cb(err,statusObj);
+				cb(err,verificationResult.statusObj);
 			}
-			cb(null,statusObj);
-
-		});
+			cb(null,verificationResult.statusObj);
+			});
 	} else {
-		cb(new Error("Invalid Input"),statusObj)
+		cb(new Error("Invalid Input"),verificationResult.statusObj)
 	}
 
+
+}
+
+deviceSchema.statics.verifyAndUpdate = function(req,cb) {
 
 }
 
 var Device = mongoose.model("Device",deviceSchema)
 
 module.exports = Device;
+
+var verifyDevice = function(device) {
+	var statusObj = {
+		name 		: false,
+		ipAdress 	: false,
+		macAdress	: false,
+		type		: false,
+	}
+
+	var verifiedDevice = {};
+
+	var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+	var ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+	var checkSum = 0;
+	if (device.macAdress 
+	&& device.macAdress.search(macRegex) > -1) {
+		console.log("OK: MACADRESS")
+		statusObj.macAdress = true;
+		checkSum += 1;
+		verifiedDevice.macAdress = device.macAdress;
+	};
+	if (device.name
+	&& device.name.length > 0) {
+		console.log("OK: NAME")
+		statusObj.name = true;
+		checkSum += 1;
+		verifiedDevice.name = device.name;
+	};
+	if (device.ipAdress
+	&& device.ipAdress.search(ipRegex) > -1) {
+		console.log("OK: IPADRESS")
+		statusObj.ipAdress = true;
+		checkSum += 1;
+		verifiedDevice.ipAdress = device.ipAdress;	
+	};
+	if (device.type
+	&& device.type.length > 0) {
+		console.log("OK: TYPE")
+		statusObj.type = true;
+		checkSum += 1;
+		verifiedDevice.type = device.type;
+	};
+
+	var retVal = {};
+	retVal.verified = checkSum == 4;
+	retVal.statusObj = statusObj;
+	retVal.device = verifiedDevice;
+
+	return retVal;
+};

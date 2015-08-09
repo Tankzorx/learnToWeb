@@ -21,17 +21,22 @@ angular.module("learnToWeb")
 		},
 		add: function(device) {
 			loadingService.startLoad();
-			return $http.post('devices/add',device)
+			var addPromise = $q.defer();
+			$http.post('devices/add',device)
 			.then(function(resp) {
 				// Success
-				deviceStorage.devices.push(device);
 				console.log("Added device");
+				addPromise.resolve();
 				loadingService.stopLoad();
-			}, function() {
+			}, function(err) {
 				//err
+				console.log("Error happened when adding device:");
+				console.log(err);
+				addPromise.reject(err);
 				loadingService.stopLoad();
-				console.log("Error happened when adding device");
 			});
+
+			return addPromise.promise;
 		},
 		delete: function(deviceId) {
 			loadingService.startLoad();
