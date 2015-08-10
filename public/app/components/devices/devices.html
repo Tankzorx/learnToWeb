@@ -16,14 +16,14 @@
 	</thead>
 	<tbody id="new-device-row">
 		<tr ng-show="configMode">
-			<td ng-class="has-error"><input class="form-control" placeholder="New Device Name"ng-model="newDeviceName"></input></td>
+			<td><input class="form-control" placeholder="New Device Name"ng-model="newDeviceName"></input></td>
 			<td><input class="form-control" placeholder="New Device IP" ng-model="newDeviceIP"></input></td>
 			<td><input class="form-control" placeholder="New Device MAC"ng-model="newDeviceMAC"></input></td>
 			<td><input class="form-control" placeholder="New Device Type"ng-model="newDeviceType"></input></td>
 			<td><button class="btn btn-primary" ng-click="addDevice()">Add Device</button></td>
 		</tr>
 
-		<tr ng-repeat="device in devices | reverse" ng-class="$index == currEdit ? 'edit' : ''">
+		<tr ng-repeat="device in devices | reverse">
 			<td>
 				<input ng-model="editDevice[device._id].name" ng-show="$index == currEdit" placeholder="{{device.name}}"></input>
 				<div ng-hide="$index == currEdit">{{device.name}}</div>
