@@ -22,9 +22,8 @@ deviceSchema.statics.getAccessibleDevices = function (userid,cb) {
 
 deviceSchema.statics.verifyAndSave = function (req,cb) {
 	console.log("Verifying and saving device for: " + req.user._id);
-	
 	var verificationResult = verifyDevice(req.body);
-	if (verificationResult.verified) {
+	if (verificationResult.checkSum == 4) {
 
 		verificationResult.device.owner			= req.user._id;
 		verificationResult.device.members		= [req.user._id];
@@ -47,6 +46,16 @@ deviceSchema.statics.verifyAndSave = function (req,cb) {
 }
 
 deviceSchema.statics.verifyAndUpdate = function(req,cb) {
+	console.log("Updating device for: " + req.user._id);
+	var verificationResult = verifyDevice(req.body);
+
+	verificationResult.device.lastUpdated = Date.now();
+	Device.update({"_id" : req.body.id},verificationResult.device,function(err,result) {
+		if (err) {
+			cb(err,verificationResult.statusObj);
+		};
+		cb(null,verificationResult.statusObj);
+	});
 
 }
 
@@ -97,7 +106,7 @@ var verifyDevice = function(device) {
 	};
 
 	var retVal = {};
-	retVal.verified = checkSum == 4;
+	retVal.checkSum = checkSum;
 	retVal.statusObj = statusObj;
 	retVal.device = verifiedDevice;
 

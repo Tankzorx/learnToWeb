@@ -2,13 +2,12 @@ angular.module("learnToWeb")
 .controller("devicesCtrl",["$scope","deviceStorage","$rootScope","user","devices",function($scope,deviceStorage,$rootScope,user,devices) {
 	console.log("In deviceCtrl")
 
-	console.log(user);
-	console.log(devices);
 	$scope.devices = deviceStorage.devices;
 	$scope.configButtonText = $scope.configMode ? "Action Mode" : "Config Mode";
 	$scope.configMode = false;
 	$scope.editDevice = {};
 	$scope.refDevices = {};
+	
 
 	$scope.newDeviceName = "";
 
@@ -55,7 +54,9 @@ angular.module("learnToWeb")
 	}
 
 	$scope.update = function(id) {
+		console.log(id);
 		console.log("Called update");
+		console.log($scope.editDevice[id]);
 		if ($scope.editDevice[id]) {
 
 			$scope.editDevice[id].id = id;

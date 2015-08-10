@@ -8,13 +8,7 @@ router.get("/",function(req, res, next) {
 
   setTimeout(function() {
 
-
   console.log("userId in device route: " +  req.user._id);
-
-    // Device.find(function(err,allDevices) {
-    //   if (err) {console.log(err)};
-    //   res.json(allDevices);
-    // })
 
   Device.getAccessibleDevices(req.user._id,function(err,data) {
     if (err) {
@@ -62,43 +56,14 @@ router.put("/update",function(req,res,next) {
 
   setTimeout(function() {
 
-    var rawDevice = req.body;
-    var updatedDevice = {};
-    var parseResults = {};
-
-    for (var prop in rawDevice) {
-      if (rawDevice.hasOwnProperty(prop) && ["ipAdress","macAdress","name","type"].indexOf(prop) > -1) {
-        switch(prop) {
-          case "ipAdress":
-          updatedDevice[prop] = rawDevice[prop];
-          parseResults[prop] = "true";
-          break;
-          case "macAdress":
-          var macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-          if(rawDevice[prop].search(macRegex) > -1) {
-            updatedDevice[prop] = rawDevice[prop];
-            parseResults[prop] = "true";
-          } else {
-            parseResults[prop] = "false";
-          }
-          break;
-          default:
-          updatedDevice[prop] = rawDevice[prop];
-          parseResults[prop] = "true";
-
-          break;
-        }
+    Device.verifyAndUpdate(req,function(err,status) {
+      if (err) {
+        res.status(500);
+        res.send(status);
+      } else {
+        res.send(status);
       }
-    }
-    console.log(updatedDevice);
-
-    Device.update({"_id" : rawDevice.id},updatedDevice,function(err,result) {
-      if (err) {res.status(500);console.log(err)};
-
-      console.log("Updated device: " + req.body.name);
-      res.status(200);
-      res.send(parseResults);
-    })
+    }); 
 
   },300);
 

@@ -16,7 +16,7 @@
 	</thead>
 	<tbody id="new-device-row">
 		<tr ng-show="configMode">
-			<td><input class="form-control" placeholder="New Device Name"ng-model="newDeviceName"></input></td>
+			<td ng-class="has-error"><input class="form-control" placeholder="New Device Name"ng-model="newDeviceName"></input></td>
 			<td><input class="form-control" placeholder="New Device IP" ng-model="newDeviceIP"></input></td>
 			<td><input class="form-control" placeholder="New Device MAC"ng-model="newDeviceMAC"></input></td>
 			<td><input class="form-control" placeholder="New Device Type"ng-model="newDeviceType"></input></td>
@@ -26,19 +26,19 @@
 		<tr ng-repeat="device in devices | reverse" ng-class="$index == currEdit ? 'edit' : ''">
 			<td>
 				<input ng-model="editDevice[device._id].name" ng-show="$index == currEdit" placeholder="{{device.name}}"></input>
-				<div ng-model="refDevices[device._id].name" ng-hide="$index == currEdit">{{device.name}}</div>
+				<div ng-hide="$index == currEdit">{{device.name}}</div>
 			</td>
 			<td>
 				<input ng-model="editDevice[device._id].ipAdress" ng-show="$index == currEdit" placeholder="{{device.ipAdress}}"></input>
-				<div ng-model="refDevices[device._id].ipAdress" ng-hide="$index == currEdit">{{device.ipAdress}}</div>
+				<div ng-hide="$index == currEdit">{{device.ipAdress}}</div>
 			</td>
 			<td>
 				<input ng-model="editDevice[device._id].macAdress" ng-show="$index == currEdit" placeholder="{{device.macAdress}}"></input>
-				<div ng-model="refDevices[device._id].macAdress" ng-hide="$index == currEdit">{{device.macAdress}}</div>
+				<div ng-hide="$index == currEdit">{{device.macAdress}}</div>
 			</td>
 			<td>
 				<input ng-model="editDevice[device._id].type" ng-show="$index == currEdit" placeholder="{{device.type}}"></input>
-				<div ng-model="refDevices[device._id].type" ng-hide="$index == currEdit">{{device.type}}</div>
+				<div ng-hide="$index == currEdit">{{device.type}}</div>
 			</td>
 			<td>{{device.addedDate | date : medium}}</td>
 			<td ng-show="configMode">
