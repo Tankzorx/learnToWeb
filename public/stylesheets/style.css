@@ -23,6 +23,11 @@ p {
 	word-wrap: break-word;
 }
 
+div.userinfo * {
+	border: 1px solid black;
+	margin: 4;
+}
+
 img {
 	width: 100%;
 	border:1px solid black;
