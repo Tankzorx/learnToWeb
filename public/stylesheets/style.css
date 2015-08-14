@@ -18,3 +18,12 @@ body {
 .device {
 	outline: 1px solid orange;
 }
+
+p {
+	word-wrap: break-word;
+}
+
+img {
+	width: 100%;
+	border:1px solid black;
+}

@@ -6,15 +6,13 @@ angular.module("learnToWeb")
 			var loggedInPromise = $q.defer();
 			$http.get('loggedin')
 				.then(function(resp) {
-					if (resp.data === "0") {
-						console.log("No user logged in.")
-						$location.url("/home");						
-						loggedInPromise.reject();
-					} else {
-						userProfile.currentUser = resp.data;
-						console.log("Current user: " + userProfile.currentUser.username)
-						loggedInPromise.resolve(userProfile.currentUser);
-					}
+					userProfile.currentUser = resp.data;
+					console.log("Current user: " + userProfile.currentUser.username)
+					loggedInPromise.resolve(userProfile.currentUser);
+				},function(resp) {
+					console.log("No user logged in.")
+					$location.url("/home");						
+					loggedInPromise.reject();
 				});
 			return loggedInPromise.promise;
 		},

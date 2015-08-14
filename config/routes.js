@@ -12,7 +12,12 @@ var isAuthenticated = function (req, res, next) {
 
 module.exports = function(app,express,passport) {
 	app.get("/loggedin", function(req,res) {
-		res.send(req.isAuthenticated() ? req.user : "0");
+		if (req.isAuthenticated()) {
+			res.send(req.user)
+		} else {
+			res.status(401);
+			res.send("Not Authenticated.")
+		}
 	});
 
 	app.use('/', routes);

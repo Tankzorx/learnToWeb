@@ -26,7 +26,7 @@ angular.module("learnToWeb")
 			.then(function(resp) {
 				// Success
 				console.log("Added device");
-				addPromise.resolve();
+				addPromise.resolve(resp);
 				loadingService.stopLoad();
 			}, function(err) {
 				//err
